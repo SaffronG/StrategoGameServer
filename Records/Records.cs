@@ -6,12 +6,12 @@ namespace StrategoGameServer.Records
     }
     public record Account(string Username, string Password, string Email);
     public record OkToken(string Message, Guid Token);
-    public record Game(UserWithToken User_a, UserWithToken User_b, int LobbyId);
+    public record Game(UserWithToken User_a, UserWithToken? User_b, List<MoveContext>? Moves);
     public record LogoutUser(string Username);
     public class Bot(int level)
     {
         public readonly int Level = level;
     }
-    public record MoveContext(string LobbyId, int Row, string Column);
+    public record MoveContext(string LobbyId, int Row, string Column, DateTime Time);
     public record GameContext(string LobbyId, int[] Board, string User, int Turn, bool IsWin);
 }
