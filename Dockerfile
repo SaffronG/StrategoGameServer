@@ -16,9 +16,9 @@ WORKDIR /app
 COPY --from=build /out .
 
 # Expose the port the application listens on
-EXPOSE 7777
+EXPOSE 8080
 # Ensure the application listens on port 7777
-ENV ASPNETCORE_URLS=http://+:7777
+ENV ASPNETCORE_URLS=http://+:8080
 
 # Set the entry point for the container
 ENTRYPOINT ["dotnet", "StrategoGameServer.dll"]

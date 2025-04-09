@@ -6,9 +6,9 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "7777:7777"
+      - "8080:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:7777
+      - ASPNETCORE_URLS=http://+:8080
     volumes:
       - ./wwwroot:/app/wwwroot
