@@ -18,8 +18,6 @@ namespace StrategoGameServer.Controllers
         }
 
         [HttpPost("findGame")]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
-        [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
         public IActionResult FindGame() {
             return Unauthorized(StatusCodes.Status503ServiceUnavailable);
         }
