@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Options;
-
 string? MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,4 +16,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+Console.Clear();
 app.Run();

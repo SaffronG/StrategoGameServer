@@ -19,5 +19,6 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
-  }
+  },
+  "csharp.debug.logging.consoleUsageMessage": "true"
 }
