@@ -6,6 +6,7 @@ namespace StrategoGameServer.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class AuthController : ControllerBase
     {
         private static readonly List<Account> Users =
@@ -18,6 +19,7 @@ namespace StrategoGameServer.Controllers
         private static readonly List<UserWithToken> Authenticated = [];
 
         [HttpPost("login")]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public IActionResult Login([FromBody] Account user)
         {
             var foundUser = Users.FirstOrDefault(u => u.Username == user.Username && u.Password == user.Password);
@@ -32,6 +34,7 @@ namespace StrategoGameServer.Controllers
         }
 
         [HttpPost("register")]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public IActionResult Register([FromBody] Account user)
         {
             if (Users.Any(u => u.Username == user.Username)) return Conflict("User already exists");
@@ -41,6 +44,7 @@ namespace StrategoGameServer.Controllers
         }
 
         [HttpPost("logout")]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public IActionResult Logout([FromBody] LogoutUser logoutUser)
         {
             var user = Authenticated.FirstOrDefault(u => u.Username == logoutUser.Username);
@@ -51,6 +55,7 @@ namespace StrategoGameServer.Controllers
         }
 
         [HttpGet("concurrentUsers")]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public IActionResult GetConcurrentUsers()
         {
             return Ok(Authenticated);

@@ -4,6 +4,7 @@ namespace StrategoGameServer.Controllers
 
     [ApiController]
     [Route("/")]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class HomeController : ControllerBase
     {
         [HttpGet]

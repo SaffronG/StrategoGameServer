@@ -1,9 +1,11 @@
 namespace StrategoGameServer.Controllers
 {
+    using System.Net.Mime;
     using Microsoft.AspNetCore.Mvc;
     using StrategoGameServer.Records;
 
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
     [Route("api/[controller]")]
     public class GameController : ControllerBase
     {
@@ -16,7 +18,14 @@ namespace StrategoGameServer.Controllers
         }
 
         [HttpPost("findGame")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
         public IActionResult FindGame() {
+            return Unauthorized(StatusCodes.Status503ServiceUnavailable);
+        }
+
+        [HttpDelete]
+        public IActionResult EndGame() {
             return Ok();
         }
 

@@ -1,99 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>API Endpoints</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        padding-top: 40px;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: rgb(50, 49, 49);
-        flex-direction: column;
-        max-height: fit-content;
-        overflow: auto;
-      }
-      .path {
-        width: 80%;
-        height: 100px;
-        background-color: rgb(238, 236, 236);
-        border-radius: 10px;
-        margin: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        flex-direction: row;
-      }
-      .get {
-        border-color: rgb(50, 49, 49);
-        border-style: solid;
-        color: rgb(238, 236, 236);
-        background-color: rgb(52, 175, 52);
-        border-radius: 0.25em;
-        width: 100px;
-        text-align: center;
-        padding: 0.2em;
-      }
-      .post {
-        border-color: rgb(50, 49, 49);
-        border-style: solid;
-        color: rgb(238, 236, 236);
-        background-color: rgb(234, 39, 39);
-        border-radius: 0.25em;
-        width: 100px;
-        text-align: center;
-        padding: 0.2em;
-      }
-      .description {
-        margin-left: 40px;
-        font-size: 1.5em;
-        width: 80%;
-      }
-    </style>
-  </head>
-  <body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StrategoGameServer API Documentation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      padding: 20px;
+    }
+    .endpoint {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: #fff;
+    }
+    .method {
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 3px;
+      color: white;
+      display: inline-block;
+    }
+    .method.get {
+      background-color: #28a745;
+    }
+    .method.post {
+      background-color: #007bff;
+    }
+    .method.delete {
+      background-color: #dc3545;
+    }
+    .path {
+      font-size: 1.2em;
+      margin: 10px 0;
+    }
+    .description {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>StrategoGameServer API Documentation</h1>
+    <p>Explore the available endpoints for the StrategoGameServer API.</p>
+  </header>
+  <div class="container">
     <!-- HomeController -->
-    <div class="path">
-      <h1 class="get">GET</h1>
-      <p class="description">/</p>
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      <div class="path">/</div>
+      <div class="description">Serves the `map.html` file as the homepage.</div>
     </div>
 
     <!-- AuthController -->
-    <div class="path">
-      <h1 class="post">POST</h1>
-      <p class="description">/api/auth/login</p>
+    <div class="endpoint">
+      <span class="method post">POST</span>
+      <div class="path">/api/auth/login</div>
+      <div class="description">Logs in a user with their credentials.</div>
     </div>
-    <div class="path">
-      <h1 class="post">POST</h1>
-      <p class="description">/api/auth/register</p>
+    <div class="endpoint">
+      <span class="method post">POST</span>
+      <div class="path">/api/auth/register</div>
+      <div class="description">Registers a new user account.</div>
     </div>
-    <div class="path">
-      <h1 class="post">POST</h1>
-      <p class="description">/api/auth/logout</p>
+    <div class="endpoint">
+      <span class="method post">POST</span>
+      <div class="path">/api/auth/logout</div>
+      <div class="description">Logs out a currently authenticated user.</div>
     </div>
-    <div class="path">
-      <h1 class="get">GET</h1>
-      <p class="description">/api/auth/concurrentUsers</p>
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      <div class="path">/api/auth/concurrentUsers</div>
+      <div class="description">Retrieves a list of currently authenticated users.</div>
     </div>
 
     <!-- GameController -->
-    <div class="path">
-      <h1 class="get">GET</h1>
-      <p class="description">/api/game/getGames</p>
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      <div class="path">/api/game/getGames</div>
+      <div class="description">Retrieves a list of all active games.</div>
     </div>
-    <div class="path">
-      <h1 class="post">POST</h1>
-      <p class="description">/api/game/findGame</p>
+    <div class="endpoint">
+      <span class="method post">POST</span>
+      <div class="path">/api/game/findGame</div>
+      <div class="description">Attempts to find a game for the user.</div>
     </div>
-    <div class="path">
-      <h1 class="post">POST</h1>
-      <p class="description">/api/game/postMove</p>
+    <div class="endpoint">
+      <span class="method post">POST</span>
+      <div class="path">/api/game/postMove</div>
+      <div class="description">Submits a move for the current game.</div>
     </div>
-  </body>
+    <div class="endpoint">
+      <span class="method delete">DELETE</span>
+      <div class="path">/api/game</div>
+      <div class="description">Ends the current game session.</div>
+    </div>
+  </div>
+</body>
 </html>

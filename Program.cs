@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Options;
+
 string? MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
