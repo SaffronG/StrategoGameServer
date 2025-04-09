@@ -5,8 +5,9 @@ namespace StrategoGameServer.Controllers
     using StrategoGameServer.Records;
 
     [ApiController]
-    [Produces(MediaTypeNames.Application.Json)]
     [Route("api/[controller]")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class GameController : ControllerBase
     {
         private static readonly List<Game> Games = [];
@@ -27,7 +28,7 @@ namespace StrategoGameServer.Controllers
             Game? openGame = Games.FirstOrDefault(g => g.User_b is null) ?? null;
             if (Games.Count < 1 && openGame == null)
             {
-                openGame = new(user, null, []);
+                openGame = new(user, null, [100], []);
                 Games.Add(openGame);
                 return Ok(openGame);
             }
@@ -39,7 +40,7 @@ namespace StrategoGameServer.Controllers
             return Unauthorized(StatusCodes.Status503ServiceUnavailable);
         }
 
-        [HttpDelete]
+        [HttpDelete("endGame")]
         public IActionResult EndGame([FromBody] int LobbyId)
         {
             if (Games.Count > LobbyId)
