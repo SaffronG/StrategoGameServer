@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Endpoints</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        padding-top: 40px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(50, 49, 49);
+        flex-direction: column;
+        max-height: fit-content;
+        overflow: auto;
+      }
+      .path {
+        width: 80%;
+        height: 100px;
+        background-color: rgb(238, 236, 236);
+        border-radius: 10px;
+        margin: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        flex-direction: row;
+      }
+      .get {
+        border-color: rgb(50, 49, 49);
+        border-style: solid;
+        color: rgb(238, 236, 236);
+        background-color: rgb(52, 175, 52);
+        border-radius: 0.25em;
+        width: 100px;
+        text-align: center;
+        padding: 0.2em;
+      }
+      .post {
+        border-color: rgb(50, 49, 49);
+        border-style: solid;
+        color: rgb(238, 236, 236);
+        background-color: rgb(234, 39, 39);
+        border-radius: 0.25em;
+        width: 100px;
+        text-align: center;
+        padding: 0.2em;
+      }
+      .description {
+        margin-left: 40px;
+        font-size: 1.5em;
+        width: 80%;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HomeController -->
+    <div class="path">
+      <h1 class="get">GET</h1>
+      <p class="description">/</p>
+    </div>
+
+    <!-- AuthController -->
+    <div class="path">
+      <h1 class="post">POST</h1>
+      <p class="description">/api/auth/login</p>
+    </div>
+    <div class="path">
+      <h1 class="post">POST</h1>
+      <p class="description">/api/auth/register</p>
+    </div>
+    <div class="path">
+      <h1 class="post">POST</h1>
+      <p class="description">/api/auth/logout</p>
+    </div>
+    <div class="path">
+      <h1 class="get">GET</h1>
+      <p class="description">/api/auth/concurrentUsers</p>
+    </div>
+
+    <!-- GameController -->
+    <div class="path">
+      <h1 class="get">GET</h1>
+      <p class="description">/api/game/getGames</p>
+    </div>
+    <div class="path">
+      <h1 class="post">POST</h1>
+      <p class="description">/api/game/findGame</p>
+    </div>
+    <div class="path">
+      <h1 class="post">POST</h1>
+      <p class="description">/api/game/postMove</p>
+    </div>
+  </body>
+</html>
