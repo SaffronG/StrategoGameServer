@@ -55,9 +55,9 @@ namespace StrategoGameServer.Controllers
         }
 
         [HttpPost("postMove")]
-        public IActionResult PostMove([FromBody] MoveContext move, [FromBody] int LobbyID)
+        public IActionResult PostMove([FromBody] MoveContext move)
         {
-            Game? game = Games[LobbyID];
+            Game? game = Games[move.LobbyId];
             if (game.Moves is null) game = game with { Moves = [move with { Time = DateTime.Now }] };
             else {
                 game.Moves.Add(move with { Time = DateTime.Now });

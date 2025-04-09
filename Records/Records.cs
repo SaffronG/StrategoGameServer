@@ -12,6 +12,6 @@ namespace StrategoGameServer.Records
     {
         public readonly int Level = level;
     }
-    public record MoveContext(string LobbyId, int Row, string Column, DateTime Time);
+    public record MoveContext(int LobbyId, int Row, string Column, DateTime Time);
     public record GameContext(string LobbyId, int[] Board, string User, int Turn, bool IsWin);
 }
