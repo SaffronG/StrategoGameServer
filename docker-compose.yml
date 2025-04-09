@@ -9,5 +9,6 @@ services:
       - "7777:7777"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:7777
     volumes:
       - ./wwwroot:/app/wwwroot
