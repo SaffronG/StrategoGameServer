@@ -61,9 +61,9 @@ namespace StrategoGameServer.Controllers
             return Ok(Authenticated);
         }
 
-        [HttpGet("getAccount")]
-        public IActionResult GetAccount([FromQuery] string Username) {
-            return Ok(Authenticated.FirstOrDefault(u => u.Username == Username));
+        [HttpPost("getAccount")]
+        public IActionResult GetAccount([FromBody] string username) {
+            return Ok(Authenticated.FirstOrDefault(u => u.Username == username));
         }
     }
 }
