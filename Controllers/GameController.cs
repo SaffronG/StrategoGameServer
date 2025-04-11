@@ -28,7 +28,7 @@ namespace StrategoGameServer.Controllers
             Game? openGame = Games.FirstOrDefault(g => g.User_b is null) ?? null;
             if (Games.Count < 1 && openGame == null)
             {
-                openGame = new(user, null, [100], []);
+                openGame = new(user, null, new Piece[100], []);
                 Games.Add(openGame);
                 return Ok(openGame);
             }
@@ -64,6 +64,26 @@ namespace StrategoGameServer.Controllers
                 game.Moves.Add(move with { Time = DateTime.Now });
             }
             return Ok(game);
+        }
+
+        [HttpGet("getBoard")]
+        public IActionResult GetBoard([FromBody] BoardRequest request) {
+            Piece[] board;
+            try {
+                board = Games[request.LobbyID].Board;
+            } catch {
+                return Forbid();
+            }
+            var tmp = new Piece[100];
+            for (int i = 0; i < board.Length; i++)
+            {
+                if (board[i].Color != request.Color) {
+                    tmp[i] = new(0, request.Color == "red" ? "blue" : "red");
+                } else {
+                    tmp[i] = board[i];
+                }
+            }
+            return Ok(tmp);
         }
     }
 }

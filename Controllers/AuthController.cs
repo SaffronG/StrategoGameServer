@@ -12,9 +12,9 @@ namespace StrategoGameServer.Controllers
         private static readonly List<Account> Users =
         [
             new("admin", "password", "admin.123@fake.com"),
-        new("user", "1234", "guest@fake.com"),
-        new("guest", "password", "guest123@fake.com"),
-    ];
+            new("user", "1234", "guest@fake.com"),
+            new("guest", "password", "guest123@fake.com"),
+        ];
 
         private static readonly List<UserWithToken> Authenticated = [];
 
