@@ -60,26 +60,33 @@ namespace StrategoGameServer.Controllers
         {
             Game? game = Games[move.LobbyId];
             if (game.Moves is null) game = game with { Moves = [move with { Time = DateTime.Now }] };
-            else {
+            else
+            {
                 game.Moves.Add(move with { Time = DateTime.Now });
             }
             return Ok(game);
         }
-
         [HttpGet("getBoard")]
-        public IActionResult GetBoard([FromBody] BoardRequest request) {
+        public IActionResult GetBoard([FromBody] BoardRequest request)
+        {
             Piece[] board;
-            try {
+            try
+            {
                 board = Games[request.LobbyID].Board;
-            } catch {
+            }
+            catch
+            {
                 return Forbid();
             }
             var tmp = new Piece[100];
             for (int i = 0; i < board.Length; i++)
             {
-                if (board[i].Color != request.Color) {
+                if (board[i].Color != request.Color)
+                {
                     tmp[i] = new(0, request.Color == "red" ? "blue" : "red");
-                } else {
+                }
+                else
+                {
                     tmp[i] = board[i];
                 }
             }
