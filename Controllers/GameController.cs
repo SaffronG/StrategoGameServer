@@ -23,19 +23,20 @@ namespace StrategoGameServer.Controllers
         }
 
         [HttpPost("findGame")]
-        public IActionResult FindGame([FromBody] UserWithToken user)
+        public IActionResult FindGame([FromBody] string username)
         {
+            
             Game? openGame = Games.FirstOrDefault(g => g.User_b is null) ?? null;
             if (Games.Count < 1 && openGame == null)
             {
-                openGame = new(user, null, new Piece[100], []);
+                openGame = new(username, null, new Piece[100], []);
                 Games.Add(openGame);
                 return Ok(openGame);
             }
             else
             {
                 if (openGame != null)
-                    return Ok(openGame with { User_b = user });
+                    return Ok(openGame with { User_b = username });
             }
             return Unauthorized(StatusCodes.Status503ServiceUnavailable);
         }

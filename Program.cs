@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
     EnvironmentName = "Development",
 });
 
+
 builder.Services.AddCors(options => { options.AddPolicy(name: MyAllowSpecificOrigins, policy => { policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); }); });
 
 builder.Services.AddControllers();
