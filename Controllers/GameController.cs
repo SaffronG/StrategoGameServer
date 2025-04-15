@@ -25,8 +25,8 @@ namespace StrategoGameServer.Controllers
         [HttpPost("findGame")]
         public IActionResult FindGame([FromBody] string username)
         {
-            
             Game? openGame = Games.FirstOrDefault(g => g.User_b is null) ?? null;
+            Console.WriteLine(openGame);
             if (Games.Count < 1 && openGame == null)
             {
                 openGame = new(username, null, new Piece[100], []);
