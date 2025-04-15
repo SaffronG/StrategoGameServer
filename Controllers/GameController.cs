@@ -26,18 +26,20 @@ namespace StrategoGameServer.Controllers
         public IActionResult FindGame([FromBody] string username)
         {
             Game? openGame = Games.FirstOrDefault(g => g.User_b is null) ?? null;
-            Console.WriteLine(openGame);
             if (Games.Count < 1 && openGame == null)
             {
+                Console.WriteLine(openGame);
                 openGame = new(username, null, new Piece[100], []);
                 Games.Add(openGame);
                 return Ok(openGame);
             }
             else
             {
+                Console.WriteLine(openGame);
                 if (openGame != null)
                     return Ok(openGame with { User_b = username });
             }
+            Console.WriteLine(openGame);
             return Unauthorized(StatusCodes.Status503ServiceUnavailable);
         }
 
