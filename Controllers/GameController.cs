@@ -29,7 +29,7 @@ namespace StrategoGameServer.Controllers
         }
 
         [HttpGet("findGame")]
-        public IActionResult FindGame([FromBody] string username)
+        public IActionResult FindGame([FromQuery] string username)
         {
             Game? openGame = Games.FirstOrDefault(g => g.User_b is null) ?? null;
             if (Games.Count < 1 && openGame == null)
