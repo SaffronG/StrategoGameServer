@@ -29,7 +29,7 @@ namespace StrategoGameServer.Controllers
         }
 
         [HttpPost("findGame")]
-        public IActionResult FindGame([FromQuery] LogoutUser user)
+        public IActionResult FindGame([FromBody] LogoutUser user)
         {
             Game? openGame = Games.FirstOrDefault(g => g.User_b is null) ?? null;
             if (Games.Count < 1 && openGame == null)
