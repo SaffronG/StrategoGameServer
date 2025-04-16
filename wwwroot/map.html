@@ -87,6 +87,11 @@
       <div class="path">/api/auth/concurrentUsers</div>
       <div class="description">Retrieves a list of currently authenticated users.</div>
     </div>
+    <div class="endpoint">
+      <span class="method get">GET</span>
+      <div class="path">/api/auth/getAccount?username=</div>
+      <div class="description">Retrieves account details for a specific username.</div>
+    </div>
 
     <!-- GameController -->
     <div class="endpoint">
@@ -108,6 +113,11 @@
       <span class="method delete">DELETE</span>
       <div class="path">/api/game/endGame</div>
       <div class="description">Ends the current game session.</div>
+    </div>
+    <div class="endpoint">
+      <span class="method post">POST</span>
+      <div class="path">/api/game/getBoard</div>
+      <div class="description">Retrieves the game board for a specific lobby and color.</div>
     </div>
   </div>
 </body>

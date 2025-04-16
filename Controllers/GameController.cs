@@ -72,7 +72,7 @@ namespace StrategoGameServer.Controllers
             }
             return Ok(game);
         }
-        [HttpGet("getBoard")]
+        [HttpPost("getBoard")]
         public IActionResult GetBoard([FromBody] BoardRequest request)
         {
             Piece[] board;
