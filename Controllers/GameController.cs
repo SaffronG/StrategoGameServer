@@ -28,14 +28,14 @@ namespace StrategoGameServer.Controllers
             return Ok(Games);
         }
 
-        [HttpGet("findGame")]
-        public IActionResult FindGame([FromQuery] string username)
+        [HttpPost("findGame")]
+        public IActionResult FindGame([FromQuery] LogoutUser user)
         {
             Game? openGame = Games.FirstOrDefault(g => g.User_b is null) ?? null;
             if (Games.Count < 1 && openGame == null)
             {
                 Console.WriteLine(openGame);
-                openGame = new(username, null, new Piece[100], []);
+                openGame = new(user.Username, null, new Piece[100], []);
                 Games.Add(openGame);
                 return Ok(openGame);
             }
@@ -43,7 +43,7 @@ namespace StrategoGameServer.Controllers
             {
                 Console.WriteLine(openGame);
                 if (openGame != null)
-                    return Ok(openGame with { User_b = username });
+                    return Ok(openGame with { User_b = user.Username });
             }
             Console.WriteLine(openGame);
             return Unauthorized(StatusCodes.Status503ServiceUnavailable);
