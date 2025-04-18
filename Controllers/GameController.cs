@@ -15,7 +15,7 @@ namespace StrategoGameServer.Controllers
             new ("test_2", "test_2", [], []),
             new ("test_3", "test_3", [], []),
             new ("test_4", "test_4", [], []),
-            new ("test_5", "test_5", [], []),
+            new ("test_5", null, [], []),
         ];
 
         [HttpGet("getGames")]
@@ -31,19 +31,20 @@ namespace StrategoGameServer.Controllers
         [HttpPost("findGame")]
         public IActionResult FindGame([FromBody] LogoutUser user)
         {
-            Game? openGame = Games.FirstOrDefault(g => g.User_b is null) ?? null;
-            if (Games.Count < 1 && openGame == null)
+            Game? openGame = Games.FirstOrDefault(g => g.User_b is null);
+            if (openGame == null)
             {
                 openGame = new(user.Username, null, new Piece[100], []);
                 Games.Add(openGame);
                 return Ok(openGame);
             }
-            else
+
+            if (openGame.User_b == null)
             {
-                if (openGame != null)
-                    return Ok(openGame with { User_b = user.Username });
+                openGame = openGame with { User_b = user.Username };
+                return Ok(openGame);
             }
-            return Unauthorized(StatusCodes.Status503ServiceUnavailable);
+            return BadRequest("No available games found.");
         }
 
         [HttpDelete("endGame")]
