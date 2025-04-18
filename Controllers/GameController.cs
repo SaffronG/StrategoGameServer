@@ -39,12 +39,15 @@ namespace StrategoGameServer.Controllers
                 return Ok(openGame);
             }
 
-            if (openGame.User_b == null)
+            else if (openGame.User_b == null)
             {
                 openGame = openGame with { User_b = user.Username };
                 return Ok(openGame);
             }
-            return BadRequest("No available games found.");
+            else
+            {
+                return BadRequest("No available games found.");
+            }
         }
 
         [HttpDelete("endGame")]
