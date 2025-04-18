@@ -10,12 +10,13 @@ namespace StrategoGameServer.Controllers
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class GameController : ControllerBase
     {
-        internal static List<Game> Games = [
-            new ("test", "test", [], []),
-            new ("test_2", "test_2", [], []),
-            new ("test_3", "test_3", [], []),
-            new ("test_4", "test_4", [], []),
-            new ("test_5", null, [], []),
+        internal static List<Game> Games =
+        [
+            new ("test", "test", new Piece[100], []),
+            new ("test_2", "test_2", new Piece[100], []),
+            new ("test_3", "test_3", new Piece[100], []),
+            new ("test_4", "test_4", new Piece[100], []),
+            new ("test_5", null, new Piece[100], []),
         ];
 
         [HttpGet("getGames")]
