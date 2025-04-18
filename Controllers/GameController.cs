@@ -32,17 +32,25 @@ namespace StrategoGameServer.Controllers
         [HttpPost("findGame")]
         public IActionResult FindGame([FromBody] LogoutUser user)
         {
-            Game? openGame = Games.FirstOrDefault(g => g.User_b is null);
+            Game? openGame = null;
+            int LobbyID = 0;
+            for (int i = 0; i < Games.Count; i++) {
+                if (Games[i].User_b is null) {
+                    openGame = Games[i];
+                    LobbyID = i;
+                    break;
+                }
+            }
             if (openGame == null)
             {
-                openGame = new(user.Username, null, new Piece[100], []);
-                Games.Add(openGame);
+                Games[LobbyID] = new(user.Username, null, new Piece[100], []);
+                Games.Add(openGame!);
                 return Ok(openGame);
             }
 
             else if (openGame.User_b == null)
             {
-                openGame = openGame with { User_b = user.Username };
+                Games[LobbyID] = openGame with { User_b = user.Username };
                 return Ok(openGame);
             }
             else
