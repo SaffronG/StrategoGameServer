@@ -12,12 +12,34 @@ namespace StrategoGameServer.Controllers
     {
         internal static List<Game> Games =
         [
-            new ("test", "test", new Piece[100], []),
-            new ("test_2", "test_2", new Piece[100], []),
-            new ("test_3", "test_3", new Piece[100], []),
-            new ("test_4", "test_4", new Piece[100], []),
-            new ("test_5", null, new Piece[100], []),
+            new ("test", "test", InitBoard(), []),
+            new ("test_2", "test_2", InitBoard(), []),
+            new ("test_3", "test_3", InitBoard(), []),
+            new ("test_4", "test_4", InitBoard(), []),
+            new ("test_5", null, InitBoard(), []),
         ];
+
+        internal static Piece[] InitBoard()
+        {
+            var board = new Piece[100];
+            Random r = new();
+            for (int i = 0; i < 100; i++)
+            {
+                if (i < 40)
+                {
+                    board[i] = new(r.Next(-1, 11), "red");
+                }
+                else if (i > 59)
+                {
+                    board[i] = new(r.Next(-1, 11), "blue");
+                }
+                else
+                {
+                    board[i] = null!;
+                }
+            }
+            return board;
+        }
 
         [HttpGet("getGames")]
         public IActionResult GetGames()
@@ -34,8 +56,10 @@ namespace StrategoGameServer.Controllers
         {
             Game? openGame = null;
             int LobbyID = 0;
-            for (int i = 0; i < Games.Count; i++) {
-                if (Games[i].User_b is null) {
+            for (int i = 0; i < Games.Count; i++)
+            {
+                if (Games[i].User_b is null)
+                {
                     openGame = Games[i];
                     LobbyID = i;
                     break;
