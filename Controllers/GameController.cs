@@ -66,13 +66,14 @@ namespace StrategoGameServer.Controllers
             {
                 Games[LobbyID] = new(user.Username, null, new Piece[100], []);
                 Games.Add(openGame!);
-                return Ok(openGame);
+                return Ok(new GameContext(LobbyID.ToString(), Games[LobbyID].Board, user.Username, 0, false));
+
             }
 
             else if (openGame.User_b == null)
             {
                 Games[LobbyID] = openGame with { User_b = user.Username };
-                return Ok(openGame);
+                return Ok(new GameContext(LobbyID.ToString(), openGame.Board, user.Username, 0, false));
             }
             else
             {
@@ -109,28 +110,23 @@ namespace StrategoGameServer.Controllers
         [HttpPost("getBoard")]
         public IActionResult GetBoard([FromBody] BoardRequest request)
         {
-            Piece[] board;
+            Game currentGame;
             try
             {
-                board = Games[request.LobbyID].Board;
+                currentGame = Games[request.LobbyID];
             }
             catch
             {
-                return Forbid();
+                return Unauthorized();
             }
-            var tmp = new Piece[100];
-            for (int i = 0; i < board.Length; i++)
+            if (currentGame.Moves!.Count < request.turn)
             {
-                if (board[i].Color != request.Color)
-                {
-                    tmp[i] = new(0, request.Color == "red" ? "blue" : "red");
-                }
-                else
-                {
-                    tmp[i] = board[i];
-                }
+                return Ok("Waiting for opponent...");
             }
-            return Ok(tmp);
+            else
+            {
+                return Ok(currentGame.Board);
+            }
         }
     }
 }

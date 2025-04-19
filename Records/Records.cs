@@ -15,5 +15,5 @@ namespace StrategoGameServer.Records
     }
     public record MoveContext(int LobbyId, int Row, string Column, DateTime? Time);
     public record GameContext(string LobbyId, Piece[] Board, string User, int Turn, bool IsWin);
-    public record BoardRequest(int LobbyID, string Color);
+    public record BoardRequest(int LobbyID, string Color, int turn);
 }
