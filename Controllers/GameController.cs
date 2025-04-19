@@ -12,11 +12,8 @@ namespace StrategoGameServer.Controllers
     {
         internal static List<Game> Games =
         [
-            new ("test", "test", InitBoard(), []),
-            new ("test_2", "test_2", InitBoard(), []),
-            new ("test_3", "test_3", InitBoard(), []),
-            new ("test_4", "test_4", InitBoard(), []),
-            new ("test_5", null, InitBoard(), []),
+            new ("ProGamer69", "Strat3g1st", InitBoard(), []),
+            new ("test", null, InitBoard(), []),
         ];
 
         internal static Piece[] InitBoard()
