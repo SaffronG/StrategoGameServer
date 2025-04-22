@@ -123,9 +123,9 @@ namespace StrategoGameServer.Controllers
             }
             catch
             {
-                return Unauthorized();
+                return Unauthorized("Invalid Lobby ID");
             }
-            if (currentGame.Moves!.Count < request.turn)
+            if (currentGame.Moves!.Count <= request.Turn)
             {
                 return Ok("Waiting for opponent...");
             }
