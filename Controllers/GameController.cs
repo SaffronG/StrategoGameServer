@@ -94,7 +94,7 @@ namespace StrategoGameServer.Controllers
                 return Forbid($"Invalid LobbyID: {LobbyId} Not Found");
             }
             return Ok();
-        }
+        }   
 
         [HttpPost("postMove")]
         public IActionResult PostMove([FromBody] MoveContext move)
