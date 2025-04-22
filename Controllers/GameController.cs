@@ -63,7 +63,7 @@ namespace StrategoGameServer.Controllers
                     break;
                 }
                 if (Games[i].User_a == user.Username || Games[i].User_b == user.Username) {
-                    return Unauthorized("A user with that name is already in a game!");
+                    return Ok(new GameContext(i.ToString(), Games[i].Board, user.Username, Games[i].Moves!.Count, false));
                 }
             }
             if (openGame == null)
