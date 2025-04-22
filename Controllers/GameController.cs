@@ -55,29 +55,34 @@ namespace StrategoGameServer.Controllers
             int LobbyID = 0;
             for (int i = 0; i < Games.Count; i++)
             {
+                // FIND OPEN GAME
                 if (Games[i].User_b is null)
                 {
                     openGame = Games[i];
                     LobbyID = i;
                     break;
                 }
+                if (Games[i].User_a == user.Username || Games[i].User_b == user.Username) {
+                    return Unauthorized("A user with that name is already in a game!");
+                }
             }
             if (openGame == null)
             {
+                // CREATE A NEW GAME
                 Games[LobbyID] = new(user.Username, null, new Piece[100], []);
                 Games.Add(openGame!);
                 return Ok(new GameContext(LobbyID.ToString(), Games[LobbyID].Board, user.Username, 0, false));
 
             }
-
             else if (openGame.User_b == null)
             {
+                // JOIN EXISTING GAME IF OPEN GAME IS FOUND
                 Games[LobbyID] = openGame with { User_b = user.Username };
                 return Ok(new GameContext(LobbyID.ToString(), openGame.Board, user.Username, 0, false));
             }
             else
             {
-                return BadRequest("No available games found.");
+                return Unauthorized("No available games found.");
             }
         }
 
@@ -94,7 +99,7 @@ namespace StrategoGameServer.Controllers
                 return Forbid($"Invalid LobbyID: {LobbyId} Not Found");
             }
             return Ok();
-        }   
+        }
 
         [HttpPost("postMove")]
         public IActionResult PostMove([FromBody] MoveContext move)
@@ -107,6 +112,7 @@ namespace StrategoGameServer.Controllers
             }
             return Ok(game);
         }
+
         [HttpPost("getBoard")]
         public IActionResult GetBoard([FromBody] BoardRequest request)
         {
@@ -127,6 +133,18 @@ namespace StrategoGameServer.Controllers
             {
                 return Ok(currentGame.Board);
             }
+        }
+
+        [HttpGet("ResetBoard")]
+        public IActionResult ResetBoard() {
+            try {
+                Games = [
+                    new ("ProGamer69", "Strat3g1st", InitBoard(), []),
+                ];
+            } catch {
+                return BadRequest("Failed to reset games!");
+            }
+            return Ok(Games);
         }
     }
 }

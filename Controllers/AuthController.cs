@@ -16,7 +16,7 @@ namespace StrategoGameServer.Controllers
             new("guest", "password", "guest123@fake.com"),
         ];
 
-        private static readonly List<UserWithToken> Authenticated = [];
+        private static List<UserWithToken> Authenticated = [];
 
         [HttpPost("login")]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
@@ -64,6 +64,13 @@ namespace StrategoGameServer.Controllers
         [HttpPost("getAccount")]
         public IActionResult GetAccount([FromBody] string username) {
             return Ok(Authenticated.FirstOrDefault(u => u.Username == username));
+        }
+
+        [HttpGet("logoutAll")]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public IActionResult LogoutAll() {
+            Authenticated = [];
+            return Ok(Authenticated);
         }
     }
 }
