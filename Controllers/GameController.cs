@@ -61,7 +61,7 @@ namespace StrategoGameServer.Controllers
                 {
                     board[i] = new(User_a[User_a_count++], "user_a");
                 }
-                else if (i >= 59)
+                else if (i > 59)
                 {
                     board[i] = new(User_b[User_b_count++], "user_b");
                 }
