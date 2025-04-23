@@ -34,7 +34,7 @@ namespace StrategoGameServer.Controllers
             int[] tmp = new int[40];
             int count = 0;
             for (int i = 0; i < 40; i++) tmp[i] = -3;
-            while (count < 41) {
+            while (count < tmp.Length) {
                 int rand = Random.Shared.Next(0, tmp.Length);
                 if (tmp[rand] == -3) {
                     tmp[rand] = defaultList.Pop();
