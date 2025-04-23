@@ -12,31 +12,35 @@ namespace StrategoGameServer.Controllers
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class GameController : ControllerBase
     {
-        internal static Stack<int> DefaultList() {
+        internal static Stack<int> DefaultList()
+        {
             return new(
             [
-                -2, // FLAG 
+                -2,                     // FLAG 
                 -1, -1, -1, -1, -1, -1, // BOMBS
-                0, // SPY 
+                0,                      // SPY 
                 9, 9, 9, 9, 9, 9, 9, 9, // SCOUTS 
-                8, 8, 8, 8, 8, // MINERS
-                7, 7, 7, 7, // SERGEANTS
-                6, 6, 6, 6, // LIEUTENANTS
-                5, 5, 5, 5, // CAPTAINS
-                4, 4, 4, // MAJORS
-                3, 3, // COLONELS
-                2, // GENERAL
-                1 // MARSHAL
+                8, 8, 8, 8, 8,          // MINERS
+                7, 7, 7, 7,             // SERGEANTS
+                6, 6, 6, 6,             // LIEUTENANTS
+                5, 5, 5, 5,             // CAPTAINS
+                4, 4, 4,                // MAJORS
+                3, 3,                   // COLONELS
+                2,                      // GENERAL
+                1                       // MARSHAL
             ]);
         }
 
-        internal static int[] RandList(Stack<int> defaultList) {
+        internal static int[] RandList(Stack<int> defaultList)
+        {
             int[] tmp = new int[40];
             int count = 0;
             for (int i = 0; i < 40; i++) tmp[i] = -3;
-            while (count < tmp.Length) {
+            while (count < tmp.Length)
+            {
                 int rand = Random.Shared.Next(0, tmp.Length);
-                if (tmp[rand] == -3) {
+                if (tmp[rand] == -3)
+                {
                     tmp[rand] = defaultList.Pop();
                     count++;
                 }
@@ -97,10 +101,12 @@ namespace StrategoGameServer.Controllers
                     LobbyID = i;
                     break;
                 }
-                if (Games[i].User_b == user.Username) {
+                if (Games[i].User_b == user.Username)
+                {
                     return Ok(new GameContext(i.ToString(), Games[i].Board, user.Username, Games[i].Moves!.Count, false));
                 }
-                if (Games[i].User_a == user.Username) {
+                if (Games[i].User_a == user.Username)
+                {
                     var board = new List<Piece>(Games[i].Board);
                     board.Reverse();
                     return Ok(new GameContext(i.ToString(), [.. board], user.Username, Games[i].Moves!.Count, false));
@@ -147,16 +153,22 @@ namespace StrategoGameServer.Controllers
         {
             Game? game = Games[move.LobbyId];
             if (game.Moves is null) game = game with { Moves = [move with { Time = DateTime.Now }] };
-            else {
-                if (game.Moves.Count > 0 && game.Moves.Last().User == move.User) {
+            else
+            {
+                if (game.Moves.Count > 0 && game.Moves.Last().User == move.User)
+                {
                     return BadRequest("It's not your turn!");
-                } else {
-                    if (move.User == game.User_a) {
+                }
+                else
+                {
+                    if (move.User == game.User_a)
+                    {
                         // REVERSE BOARD
-                        game.Board[99-move.Index_last] = game.Board[99-move.Index];
-                        game.Board[99-move.Index_last] = null!;
+                        game.Board[99 - move.Index_last] = game.Board[99 - move.Index];
+                        game.Board[99 - move.Index_last] = null!;
                     }
-                    else {
+                    else
+                    {
                         game.Board[move.Index_last] = game.Board[move.Index];
                         game.Board[move.Index] = null!;
                     }
@@ -190,12 +202,16 @@ namespace StrategoGameServer.Controllers
         }
 
         [HttpGet("ResetBoard")]
-        public IActionResult ResetBoard() {
-            try {
+        public IActionResult ResetBoard()
+        {
+            try
+            {
                 Games = [
                     new ("ProGamer69", "Strat3g1st", InitBoard(), []),
                 ];
-            } catch {
+            }
+            catch
+            {
                 return BadRequest("Failed to reset games!");
             }
             return Ok(Games);
