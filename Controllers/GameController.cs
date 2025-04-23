@@ -17,7 +17,7 @@ namespace StrategoGameServer.Controllers
             [
                 -2, // FLAG 
                 -1, -1, -1, -1, -1, -1, // BOMBS
-                0, // SPY
+                0, // SPY 
                 9, 9, 9, 9, 9, 9, 9, 9, // SCOUTS 
                 8, 8, 8, 8, 8, // MINERS
                 7, 7, 7, 7, // SERGEANTS
@@ -61,7 +61,7 @@ namespace StrategoGameServer.Controllers
                 {
                     board[i] = new(User_a[User_a_count++], "user_a");
                 }
-                else if (i > 59)
+                else if (i > 58)
                 {
                     board[i] = new(User_b[User_b_count++], "user_b");
                 }
