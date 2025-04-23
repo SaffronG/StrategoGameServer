@@ -24,11 +24,11 @@ namespace StrategoGameServer.Controllers
             {
                 if (i < 40)
                 {
-                    board[i] = new(r.Next(-2, 10), "red");
+                    board[i] = new(r.Next(-2, 11), "red");
                 }
                 else if (i > 59)
                 {
-                    board[i] = new(r.Next(-2, 10), "blue");
+                    board[i] = new(r.Next(-2, 11), "blue");
                 }
                 else
                 {
