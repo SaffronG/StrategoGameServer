@@ -97,8 +97,13 @@ namespace StrategoGameServer.Controllers
                     LobbyID = i;
                     break;
                 }
-                 if (Games[i].User_a == user.Username || Games[i].User_b == user.Username) {
+                if (Games[i].User_b == user.Username) {
                     return Ok(new GameContext(i.ToString(), Games[i].Board, user.Username, Games[i].Moves!.Count, false));
+                }
+                if (Games[i].User_a == user.Username) {
+                    var board = new List<Piece>(Games[i].Board);
+                    board.Reverse();
+                    return Ok(new GameContext(i.ToString(), [.. board], user.Username, Games[i].Moves!.Count, false));
                 }
             }
             if (openGame == null)
