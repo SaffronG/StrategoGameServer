@@ -76,6 +76,10 @@ namespace StrategoGameServer.Controllers
         [HttpGet("getGames")]
         public IActionResult GetGames()
         {
+            if (Games.Count == 0)
+            {
+                return NotFound("No games found.");
+            }
             return Ok(Games);
         }
 
