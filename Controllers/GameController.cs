@@ -166,6 +166,20 @@ namespace StrategoGameServer.Controllers
                 {
                     return BadRequest("It's not your turn!");
                 }
+                else if (move.User == game.User_a)
+                    {
+                        // REVERSE BOARD
+                        game.Board[99 - move.Index_last] = game.Board[99 - move.Index];
+                        game.Board[99 - move.Index_last] = null!;
+                    }
+                    else
+                    {
+                        game.Board[move.Index_last] = game.Board[move.Index];
+                        game.Board[move.Index] = null!;
+                    }
+                     if (game.Moves.Count == 0) {
+
+                }
                 else
                 {
                     if (move.User == game.User_a)
