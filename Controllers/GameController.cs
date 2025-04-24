@@ -117,6 +117,12 @@ namespace StrategoGameServer.Controllers
                 if (Games[i].User_b is null)
                 {
                     Games[i] = Games[i] with { User_b = user.Username };
+                    for (int j = 0; j < 40; j++) {
+                        Games[i].Board[j] = Games[i].Board[j] with { Visible = false };
+                    }
+                    for (int j = 60; j < 100; j++) {
+                        Games[i].Board[j] = Games[i].Board[j] with { Visible = true };
+                    }       
                     return Ok(new GameContext(i.ToString(), Games[i].Board, user.Username, Games[i].Moves!.Count, false));
                 }
             }
@@ -124,6 +130,12 @@ namespace StrategoGameServer.Controllers
             // Create a new game if no open game is found
             var newGame = new Game(user.Username, null, InitBoard(), []);
             Games.Add(newGame);
+            for (int j = 0; j < 40; j++) {
+                newGame.Board[j] = newGame.Board[j] with { Visible = false };
+            }
+            for (int j = 60; j < 100; j++) {
+                newGame.Board[j] = newGame.Board[j] with { Visible = true };
+            }
             int newLobbyID = Games.Count - 1;
             return Ok(new GameContext(newLobbyID.ToString(), newGame.Board, user.Username, 0, false));
         }
