@@ -101,6 +101,12 @@ namespace StrategoGameServer.Controllers
                         reversedBoard.Reverse();
                         return Ok(new GameContext(i.ToString(), reversedBoard.ToArray(), user.Username, Games[i].Moves!.Count, false));
                     }
+                    for (int j = 0; j < 40; j++) {
+                        board[j] = board[j] with { Visible = false };
+                    }
+                    for (int j = 60; j < 100; j++) {
+                        board[j] = board[j] with { Visible = true };
+                    }
                     return Ok(new GameContext(i.ToString(), board, user.Username, Games[i].Moves!.Count, false));
                 }
             }
