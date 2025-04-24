@@ -99,7 +99,7 @@ namespace StrategoGameServer.Controllers
                 {
                     openGame = Games[i];
                     LobbyID = i;
-                    break;
+                    return Ok(new GameContext(LobbyID.ToString(), Games[LobbyID].Board, user.Username, 0, false));
                 }
                 else if (Games[i].User_a == user.Username || Games[i].User_b == user.Username) {
                     return Ok(new GameContext(i.ToString(), Games[i].Board, user.Username, Games[i].Moves!.Count, false));
