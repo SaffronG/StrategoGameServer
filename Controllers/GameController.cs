@@ -91,13 +91,13 @@ namespace StrategoGameServer.Controllers
             for (int i = 0; i < Games.Count; i++)
             {
                 // FIND OPEN GAME
-                if (Games[i].User_b is null || Games[i].User_a is null)
+                if (Games[i].User_b is null || Games[i].User_a is null && Games[i].User_b != user.Username && Games[i].User_a != user.Username)
                 {
                     openGame = Games[i];
                     LobbyID = i;
                     break;
                 }
-                 if (Games[i].User_a == user.Username || Games[i].User_b == user.Username) {
+                else if (Games[i].User_a == user.Username || Games[i].User_b == user.Username) {
                     return Ok(new GameContext(i.ToString(), Games[i].Board, user.Username, Games[i].Moves!.Count, false));
                 }
             }
