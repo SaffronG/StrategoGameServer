@@ -90,46 +90,39 @@ namespace StrategoGameServer.Controllers
         [HttpPost("findGame")]
         public IActionResult FindGame([FromBody] LogoutUser user)
         {
-            Game? openGame = null;
-            int LobbyID = 0;
+            // Check if the user is already in a game
             for (int i = 0; i < Games.Count; i++)
             {
-                // FIND OPEN GAME
-                if (Games[i].User_b is null || Games[i].User_a is null && Games[i].User_b != user.Username && Games[i].User_a != user.Username)
+                if (Games[i].User_a == user.Username || Games[i].User_b == user.Username)
                 {
-                    openGame = Games[i];
-                    LobbyID = i;
-                    return Ok(new GameContext(LobbyID.ToString(), Games[LobbyID].Board, user.Username, 0, false));
+                    // Return the current game information
+                    var board = Games[i].Board;
+                    if (user.Username == Games[i].User_a) {
+                        // REVERSE BOARD
+                        for (int j = 0; j < board.Length; j++)
+                        {
+                            if (board[j] != null) board[j] = new Piece(board[j].Rank, "user_a");
+                        }
+                    }
+                    return Ok(new GameContext(i.ToString(), board, user.Username, Games[i].Moves!.Count, false));
                 }
-                else if (Games[i].User_a == user.Username || Games[i].User_b == user.Username) {
+            }
+
+            // Find an open game
+            for (int i = 0; i < Games.Count; i++)
+            {
+                if (Games[i].User_b is null)
+                {
+                    Games[i] = Games[i] with { User_b = user.Username };
                     return Ok(new GameContext(i.ToString(), Games[i].Board, user.Username, Games[i].Moves!.Count, false));
                 }
-                if (Games[i].User_a == user.Username)
-                {
-                    var board = new List<Piece>(Games[i].Board);
-                    board.Reverse();
-                    return Ok(new GameContext(i.ToString(), [.. board], user.Username, Games[i].Moves!.Count, false));
-                }
             }
-            if (openGame == null)
-            {
-                // CREATE A NEW GAME
-                Games[LobbyID] = new(user.Username, null, InitBoard(), []);
-                Games.Add(openGame!);
-                LobbyID = Games.Count - 1;
-                return Ok(new GameContext(LobbyID.ToString(), Games[LobbyID].Board, user.Username, 0, false));
 
-            }
-            else if (openGame.User_b == null)
-            {
-                // JOIN EXISTING GAME IF OPEN GAME IS FOUND
-                Games[LobbyID] = openGame with { User_b = user.Username };
-                return Ok(new GameContext(LobbyID.ToString(), openGame.Board, user.Username, 0, false));
-            }
-            else
-            {
-                return Unauthorized("No available games found.");
-            }
+            // Create a new game if no open game is found
+            var newGame = new Game(user.Username, null, InitBoard(), []);
+            Games.Add(newGame);
+            int newLobbyID = Games.Count - 1;
+            return Ok(new GameContext(newLobbyID.ToString(), newGame.Board, user.Username, 0, false));
         }
 
         [HttpDelete("endGame")]
