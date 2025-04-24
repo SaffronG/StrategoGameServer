@@ -73,7 +73,7 @@ namespace StrategoGameServer.Controllers
             return Ok(Authenticated);
         }
 
-        [HttpGet("isAuthenticated")]
+        [HttpPost("isAuthenticated")]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public IActionResult IsAuthenticated([FromBody] string username) {
             var user = Authenticated.FirstOrDefault(u => u.Username == username);

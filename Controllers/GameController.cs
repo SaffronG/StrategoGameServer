@@ -1,9 +1,7 @@
 namespace StrategoGameServer.Controllers
 {
-    using System.Diagnostics;
     using System.Net.Mime;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.ObjectPool;
     using StrategoGameServer.Records;
 
     [ApiController]
