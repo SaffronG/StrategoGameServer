@@ -97,7 +97,7 @@ namespace StrategoGameServer.Controllers
                     var board = Games[i].Board;
                     if (user.Username == Games[i].User_a)
                         for (int j = 99; j < board.Length; j--)
-                            board[j] = new Piece(board[j].Rank, "user_a", board[j].visible);
+                            board[j] = new Piece(board[j].Rank, "user_a", board[j].Visible);
                     return Ok(new GameContext(i.ToString(), board, user.Username, Games[i].Moves!.Count, false));
                 }
             }
