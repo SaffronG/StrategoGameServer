@@ -95,13 +95,9 @@ namespace StrategoGameServer.Controllers
                 {
                     // Return the current game information
                     var board = Games[i].Board;
-                    if (user.Username == Games[i].User_a) {
-                        // REVERSE BOARD
-                        for (int j = 0; j < board.Length; j++)
-                        {
-                            if (board[j] != null) board[j] = new Piece(board[j].Rank, "user_a");
-                        }
-                    }
+                    if (user.Username == Games[i].User_a)
+                        for (int j = 99; j < board.Length; j--)
+                            board[j] = new Piece(board[j].Rank, "user_a");
                     return Ok(new GameContext(i.ToString(), board, user.Username, Games[i].Moves!.Count, false));
                 }
             }
