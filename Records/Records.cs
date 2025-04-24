@@ -7,7 +7,7 @@ namespace StrategoGameServer.Records
     public record Account(string Username, string Password, string Email);
     public record OkToken(string Message, Guid Token);
     public record Game(string User_a, string? User_b, Piece[] Board, List<MoveContext>? Moves);
-    public record Piece(int Rank, string Color);
+    public record Piece(int Rank, string User, Boolean visible);
     public record LogoutUser(string Username);
     public class Bot(int level)
     {

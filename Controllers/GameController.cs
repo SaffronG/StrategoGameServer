@@ -61,11 +61,11 @@ namespace StrategoGameServer.Controllers
             {
                 if (i < 40)
                 {
-                    board[i] = new(User_a[User_a_count++], "user_a");
+                    board[i] = new(User_a[User_a_count++], "user_a", false);
                 }
                 else if (i > 59)
                 {
-                    board[i] = new(User_b[User_b_count++], "user_b");
+                    board[i] = new(User_b[User_b_count++], "user_b", true);
                 }
                 else
                 {
@@ -97,7 +97,7 @@ namespace StrategoGameServer.Controllers
                     var board = Games[i].Board;
                     if (user.Username == Games[i].User_a)
                         for (int j = 99; j < board.Length; j--)
-                            board[j] = new Piece(board[j].Rank, "user_a");
+                            board[j] = new Piece(board[j].Rank, "user_a", board[j].visible);
                     return Ok(new GameContext(i.ToString(), board, user.Username, Games[i].Moves!.Count, false));
                 }
             }
