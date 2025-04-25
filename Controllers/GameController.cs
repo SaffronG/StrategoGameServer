@@ -99,12 +99,22 @@ namespace StrategoGameServer.Controllers
                     {
                         var reversedBoard = new List<Piece>(board);
                         reversedBoard.Reverse();
-                        return Ok(new GameContext(i.ToString(), reversedBoard.ToArray(), user.Username, Games[i].Moves!.Count, false));
+                        for (int j = 0; j < 40; j++)
+                        {
+                            if (board[j] != null) board[j] = board[j] with { Visible = false };
+                        }
+                        for (int j = 60; j < 100; j++)
+                        {
+                            if (board[j] != null) board[j] = board[j] with { Visible = true };
+                        }
+                        return Ok(new GameContext(i.ToString(), [.. reversedBoard], user.Username, Games[i].Moves!.Count, false));
                     }
-                    for (int j = 0; j < 40; j++) {
+                    for (int j = 0; j < 40; j++)
+                    {
                         if (board[j] != null) board[j] = board[j] with { Visible = false };
                     }
-                    for (int j = 60; j < 100; j++) {
+                    for (int j = 60; j < 100; j++)
+                    {
                         if (board[j] != null) board[j] = board[j] with { Visible = true };
                     }
                     return Ok(new GameContext(i.ToString(), board, user.Username, Games[i].Moves!.Count, false));
@@ -117,12 +127,14 @@ namespace StrategoGameServer.Controllers
                 if (Games[i].User_b is null)
                 {
                     Games[i] = Games[i] with { User_b = user.Username };
-                    for (int j = 0; j < 40; j++) {
+                    for (int j = 0; j < 40; j++)
+                    {
                         Games[i].Board[j] = Games[i].Board[j] with { Visible = false };
                     }
-                    for (int j = 60; j < 100; j++) {
+                    for (int j = 60; j < 100; j++)
+                    {
                         Games[i].Board[j] = Games[i].Board[j] with { Visible = true };
-                    }       
+                    }
                     return Ok(new GameContext(i.ToString(), Games[i].Board, user.Username, Games[i].Moves!.Count, false));
                 }
             }
@@ -130,10 +142,12 @@ namespace StrategoGameServer.Controllers
             // Create a new game if no open game is found
             var newGame = new Game(user.Username, null, InitBoard(), []);
             Games.Add(newGame);
-            for (int j = 0; j < 40; j++) {
+            for (int j = 0; j < 40; j++)
+            {
                 newGame.Board[j] = newGame.Board[j] with { Visible = false };
             }
-            for (int j = 60; j < 100; j++) {
+            for (int j = 60; j < 100; j++)
+            {
                 newGame.Board[j] = newGame.Board[j] with { Visible = true };
             }
             int newLobbyID = Games.Count - 1;
@@ -176,13 +190,13 @@ namespace StrategoGameServer.Controllers
                     return BadRequest("It's not your turn!");
                 }
 
-                if (move.User == game.User_a)
+                else if (move.User == game.User_a)
                 {
                     // Reverse board for User_a
                     List<Piece> reversedBoard = [.. game.Board];
                     reversedBoard.Reverse();
-                    game.Board[move.Index_last] = reversedBoard[move.Index];
-                    reversedBoard[move.Index] = null!;
+                    game.Board[move.Index] = reversedBoard[move.Index_last];
+                    reversedBoard[move.Index_last] = null!;
                     reversedBoard.Reverse();
                     for (int i = 0; i < game.Board.Length; i++)
                     {
