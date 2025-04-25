@@ -126,8 +126,12 @@ namespace StrategoGameServer.Controllers
                 {
                     Games[i] = Games[i] with { User_b = user.Username };
                     for (int j = 0; j < Games[i].Board.Length; j++)
-                        if (Games[i].Board[j].User == "NONE")
+                    {
+                        if (Games[i].Board[j] != null && Games[i].Board[j].User == "NONE")
+                        {
                             Games[i].Board[j] = Games[i].Board[j] with { User = user.Username };
+                        }
+                    }
                     for (int j = 0; j < 40; j++)
                     {
                         Games[i].Board[j] = Games[i].Board[j] with { Visible = false };
@@ -136,7 +140,7 @@ namespace StrategoGameServer.Controllers
                     {
                         Games[i].Board[j] = Games[i].Board[j] with { Visible = true };
                     }
-                    return Ok(new GameContext(i.ToString(), Games[i].Board, Games[i].User_a,user.Username, Games[i].Moves!.Count, false));
+                    return Ok(new GameContext(i.ToString(), Games[i].Board, Games[i].User_a, user.Username, Games[i].Moves!.Count, false));
                 }
             }
 
