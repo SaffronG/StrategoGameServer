@@ -190,6 +190,10 @@ namespace StrategoGameServer.Controllers
             }
             else
             {
+                if (game.User_b == null)
+                {
+                    return BadRequest("Waiting for opponent...");
+                }
                 if (game.Moves.Count > 0 && game.Moves.Last().User == move.User)
                 {
                     return BadRequest("It's not your turn!");
