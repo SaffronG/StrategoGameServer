@@ -199,27 +199,44 @@ namespace StrategoGameServer.Controllers
                     return BadRequest("It's not your turn!");
                 }
 
-                if (move.User == game.User_a)
+                var movingPiece = game.Board[move.Index_last];
+                var targetPiece = game.Board[move.Index];
+
+                if (movingPiece == null)
                 {
-                    // Reverse board for User_a
-                    List<Piece> reversedBoard = new(game.Board);
-                    reversedBoard.Reverse();
+                    return BadRequest("No piece to move at the specified location.");
+                }
 
-                    // Update the board with the move
-                    reversedBoard[move.Index_last] = null!;
-                    reversedBoard[move.Index] = game.Board[move.Index_last];
+                if (targetPiece != null && movingPiece.User == targetPiece.User)
+                {
+                    return BadRequest("Cannot move onto a piece owned by the same player.");
+                }
 
-                    // Reverse back and update the game board
-                    reversedBoard.Reverse();
-                    for (int i = 0; i < game.Board.Length; i++)
+                // Handle combat if there is a target piece
+                if (targetPiece != null)
+                {
+                    if (movingPiece.Rank > targetPiece.Rank)
                     {
-                        game.Board[i] = reversedBoard[i];
+                        // Moving piece wins
+                        game.Board[move.Index] = movingPiece with { Visible = true };
+                        game.Board[move.Index_last] = null!;
+                    }
+                    else if (movingPiece.Rank < targetPiece.Rank)
+                    {
+                        // Target piece wins
+                        game.Board[move.Index_last] = null!;
+                    }
+                    else
+                    {
+                        // Both pieces are of the same rank, both are removed
+                        game.Board[move.Index] = null!;
+                        game.Board[move.Index_last] = null!;
                     }
                 }
                 else
                 {
-                    // Update the board directly for User_b
-                    game.Board[move.Index] = game.Board[move.Index_last];
+                    // No combat, move the piece
+                    game.Board[move.Index] = movingPiece;
                     game.Board[move.Index_last] = null!;
                 }
 
