@@ -183,6 +183,15 @@ namespace StrategoGameServer.Controllers
                 return Unauthorized("Invalid Lobby ID or User");
             }
 
+            if (game.User_a == move.User)
+            {
+                move = move with
+                {
+                    Index_last = 99 - move.Index_last,
+                    Index = 99 - move.Index
+                };
+            }
+
             if (game.Moves is null)
             {
                 game.Moves!.Clear();
