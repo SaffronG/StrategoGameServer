@@ -240,7 +240,16 @@ namespace StrategoGameServer.Controllers
                     game.Board[move.Index_last] = null!;
                 }
 
-                // Alternate turns between User_a and User_b
+                // Update visibility for both players
+                for (int i = 0; i < 40; i++)
+                {
+                    if (game.Board[i] != null) game.Board[i] = game.Board[i] with { Visible = false };
+                }
+                for (int i = 60; i < 100; i++)
+                {
+                    if (game.Board[i] != null) game.Board[i] = game.Board[i] with { Visible = true };
+                }
+
                 game.Moves.Add(move with { Time = DateTime.Now });
             }
 
