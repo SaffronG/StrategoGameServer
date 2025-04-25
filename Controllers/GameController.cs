@@ -158,10 +158,10 @@ namespace StrategoGameServer.Controllers
         [HttpPost("postMove")]
         public IActionResult PostMove([FromBody] MoveContext move)
         {
-            Game? game = Games[move.LobbyId];
+            Game? game = Games.FirstOrDefault(g => g.User_a == move.User || g.User_b == move.User);
             if (game == null)
             {
-                return BadRequest("Invalid Lobby ID.");
+                return Unauthorized("Invalid Lobby ID or User");
             }
 
             if (game.Moves is null)
