@@ -47,9 +47,8 @@ namespace StrategoGameServer.Controllers
         }
         internal static List<Game> Games =
         [
-            new ("ProGamer69", "Strat3g1st", InitBoard(), []),
         ];
-        internal static Piece[] InitBoard()
+        internal static Piece[] InitBoard(string user_a, string user_b)
         {
             int User_a_count = 0;
             int User_b_count = 0;
@@ -61,11 +60,11 @@ namespace StrategoGameServer.Controllers
             {
                 if (i < 40)
                 {
-                    board[i] = new(User_a[User_a_count++], "user_a", false);
+                    board[i] = new(User_a[User_a_count++], user_a, false);
                 }
                 else if (i > 59)
                 {
-                    board[i] = new(User_b[User_b_count++], "user_b", true);
+                    board[i] = new(User_b[User_b_count++], user_b, true);
                 }
                 else
                 {
@@ -74,7 +73,6 @@ namespace StrategoGameServer.Controllers
             }
             return board;
         }
-
         [HttpGet("getGames")]
         public IActionResult GetGames()
         {
@@ -127,6 +125,9 @@ namespace StrategoGameServer.Controllers
                 if (Games[i].User_b is null)
                 {
                     Games[i] = Games[i] with { User_b = user.Username };
+                    for (int j = 0; j < Games[i].Board.Length; j++)
+                        if (Games[i].Board[j].User == "NONE")
+                            Games[i].Board[j] = Games[i].Board[j] with { User = user.Username };
                     for (int j = 0; j < 40; j++)
                     {
                         Games[i].Board[j] = Games[i].Board[j] with { Visible = false };
@@ -135,12 +136,12 @@ namespace StrategoGameServer.Controllers
                     {
                         Games[i].Board[j] = Games[i].Board[j] with { Visible = true };
                     }
-                    return Ok(new GameContext(i.ToString(), Games[i].Board, Games[i].User_a, user.Username, Games[i].Moves!.Count, false));
+                    return Ok(new GameContext(i.ToString(), Games[i].Board, Games[i].User_a,user.Username, Games[i].Moves!.Count, false));
                 }
             }
 
             // Create a new game if no open game is found
-            var newGame = new Game(user.Username, null, InitBoard(), []);
+            var newGame = new Game(user.Username, null, InitBoard(user.Username, "NONE"), []);
             Games.Add(newGame);
             for (int j = 0; j < 40; j++)
             {
@@ -236,22 +237,6 @@ namespace StrategoGameServer.Controllers
             {
                 return Ok(currentGame.Board);
             }
-        }
-
-        [HttpGet("ResetBoard")]
-        public IActionResult ResetBoard()
-        {
-            try
-            {
-                Games = [
-                    new ("ProGamer69", "Strat3g1st", InitBoard(), []),
-                ];
-            }
-            catch
-            {
-                return BadRequest("Failed to reset games!");
-            }
-            return Ok(Games);
         }
     }
 }
