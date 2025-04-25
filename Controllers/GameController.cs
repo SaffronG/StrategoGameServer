@@ -104,25 +104,11 @@ namespace StrategoGameServer.Controllers
                     if (user.Username == Games[i].User_a)
                     {
                         var reversedBoard = new List<Piece>(board);
-                        reversedBoard.Reverse();
-                        for (int j = 0; j < 40; j++)
-                        {
-                            if (board[j] != null) board[j] = board[j] with { Visible = false };
-                        }
-                        for (int j = 60; j < 100; j++)
-                        {
-                            if (board[j] != null) board[j] = board[j] with { Visible = true };
-                        }
+                        reversedBoard.Reverse();    
+                        for (int j = 0; j < 100; j++) if (board[j] != null && board[j].User != user.Username) board[j] = board[j] with { Visible = false };
                         return Ok(new GameContext(i.ToString(), [.. reversedBoard], user.Username, Games[i].User_b!, Games[i].Moves!.Count, false));
                     }
-                    for (int j = 0; j < 40; j++)
-                    {
-                        if (board[j] != null) board[j] = board[j] with { Visible = false };
-                    }
-                    for (int j = 60; j < 100; j++)
-                    {
-                        if (board[j] != null) board[j] = board[j] with { Visible = true };
-                    }
+                    for (int j = 0; j < 100; j++) if (board[j] != null && board[j].User != user.Username) board[j] = board[j] with { Visible = false };
                     return Ok(new GameContext(i.ToString(), board, Games[i].User_a, user.Username, Games[i].Moves!.Count, false));
                 }
             }
@@ -140,14 +126,7 @@ namespace StrategoGameServer.Controllers
                             Games[i].Board[j] = Games[i].Board[j] with { User = user.Username };
                         }
                     }
-                    for (int j = 0; j < 40; j++)
-                    {
-                        Games[i].Board[j] = Games[i].Board[j] with { Visible = false };
-                    }
-                    for (int j = 60; j < 100; j++)
-                    {
-                        Games[i].Board[j] = Games[i].Board[j] with { Visible = true };
-                    }
+                    for (int j = 0; j < 100; j++) if (Games[i].Board[j] != null && Games[i].Board[j].User != user.Username) Games[i].Board[j] = Games[i].Board[j] with { Visible = false };
                     return Ok(new GameContext(i.ToString(), Games[i].Board, Games[i].User_a, user.Username, Games[i].Moves!.Count, false));
                 }
             }
