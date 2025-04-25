@@ -107,7 +107,7 @@ namespace StrategoGameServer.Controllers
                         {
                             if (board[j] != null) board[j] = board[j] with { Visible = true };
                         }
-                        return Ok(new GameContext(i.ToString(), [.. reversedBoard], user.Username, Games[i].Moves!.Count, false));
+                        return Ok(new GameContext(i.ToString(), [.. reversedBoard], user.Username, Games[i].User_a == user.Username ? Games[i].User_a : Games[i].User_b, Games[i].Moves!.Count, false));
                     }
                     for (int j = 0; j < 40; j++)
                     {
@@ -117,7 +117,7 @@ namespace StrategoGameServer.Controllers
                     {
                         if (board[j] != null) board[j] = board[j] with { Visible = true };
                     }
-                    return Ok(new GameContext(i.ToString(), board, user.Username, Games[i].Moves!.Count, false));
+                    return Ok(new GameContext(i.ToString(), board, user.Username,  Games[i].User_a == user.Username ? Games[i].User_a : Games[i].User_b, Games[i].Moves!.Count, false));
                 }
             }
 
@@ -135,7 +135,7 @@ namespace StrategoGameServer.Controllers
                     {
                         Games[i].Board[j] = Games[i].Board[j] with { Visible = true };
                     }
-                    return Ok(new GameContext(i.ToString(), Games[i].Board, user.Username, Games[i].Moves!.Count, false));
+                    return Ok(new GameContext(i.ToString(), Games[i].Board, user.Username, Games[i].User_a == user.Username ? Games[i].User_a : Games[i].User_b, Games[i].Moves!.Count, false));
                 }
             }
 
@@ -151,7 +151,7 @@ namespace StrategoGameServer.Controllers
                 newGame.Board[j] = newGame.Board[j] with { Visible = true };
             }
             int newLobbyID = Games.Count - 1;
-            return Ok(new GameContext(newLobbyID.ToString(), newGame.Board, user.Username, 0, false));
+            return Ok(new GameContext(newLobbyID.ToString(), newGame.Board, user.Username, null, 0, false));
         }
 
         [HttpDelete("endGame")]
