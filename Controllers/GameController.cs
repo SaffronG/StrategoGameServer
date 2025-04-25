@@ -195,13 +195,17 @@ namespace StrategoGameServer.Controllers
                     return BadRequest("It's not your turn!");
                 }
 
-                else if (move.User == game.User_a)
+                if (move.User == game.User_a)
                 {
                     // Reverse board for User_a
-                    List<Piece> reversedBoard = [.. game.Board];
+                    List<Piece> reversedBoard = new(game.Board);
                     reversedBoard.Reverse();
-                    game.Board[move.Index] = reversedBoard[move.Index_last];
+
+                    // Update the board with the move
                     reversedBoard[move.Index_last] = null!;
+                    reversedBoard[move.Index] = game.Board[move.Index_last];
+
+                    // Reverse back and update the game board
                     reversedBoard.Reverse();
                     for (int i = 0; i < game.Board.Length; i++)
                     {
@@ -210,8 +214,9 @@ namespace StrategoGameServer.Controllers
                 }
                 else
                 {
-                    game.Board[move.Index_last] = game.Board[move.Index];
-                    game.Board[move.Index] = null!;
+                    // Update the board directly for User_b
+                    game.Board[move.Index] = game.Board[move.Index_last];
+                    game.Board[move.Index_last] = null!;
                 }
 
                 game.Moves.Add(move with { Time = DateTime.Now });
