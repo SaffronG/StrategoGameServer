@@ -92,6 +92,14 @@ namespace StrategoGameServer.Controllers
                 if (Games[i].User_a == user.Username || Games[i].User_b == user.Username)
                 {
                     // Return the current game information
+                    if (Games[i].IsWin) {
+                        if (Games[i].Moves![Games[i].Moves!.Count-1].User == user.Username) {
+                            return Ok(new WinResponse(true, $"Congratulations, {user.Username}! You win!"));
+                        }
+                        else {
+                            return Ok(new WinResponse(false, $"You lost, {user.Username}! Better luck next time..."));
+                        }
+                    }
                     var board = Games[i].Board;
                     if (user.Username == Games[i].User_a)
                     {
@@ -145,18 +153,16 @@ namespace StrategoGameServer.Controllers
             }
 
             // Create a new game if no open game is found
-            var newGame = new Game(user.Username, null, InitBoard(user.Username, "NONE"), []);
+            var newGame = new Game(user.Username, null, InitBoard(user.Username, "NONE"), [], false);
             Games.Add(newGame);
             for (int j = 0; j < 40; j++)
-            {
                 newGame.Board[j] = newGame.Board[j] with { Visible = false };
-            }
             for (int j = 60; j < 100; j++)
-            {
                 newGame.Board[j] = newGame.Board[j] with { Visible = true };
-            }
             int newLobbyID = Games.Count - 1;
-            return Ok(new GameContext(newLobbyID.ToString(), newGame.Board, user.Username, null, 0, false));
+            List<Piece> game = [.. Games[newLobbyID].Board];
+            game.Reverse();
+            return Ok(new GameContext(newLobbyID.ToString(), [.. game], user.Username, null!, 0, false));
         }
 
         [HttpDelete("endGame")]
@@ -224,6 +230,9 @@ namespace StrategoGameServer.Controllers
                 // Handle combat if there is a target piece
                 if (targetPiece != null)
                 {
+                    if (targetPiece.Rank == -2)
+                        Games[move.LobbyId] = Games[move.LobbyId] with { IsWin = true };
+
                     if (movingPiece.Rank > targetPiece.Rank)
                     {
                         // Moving piece wins
