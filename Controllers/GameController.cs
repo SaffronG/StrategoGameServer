@@ -102,10 +102,10 @@ namespace StrategoGameServer.Controllers
                         return Ok(new GameContext(i.ToString(), reversedBoard.ToArray(), user.Username, Games[i].Moves!.Count, false));
                     }
                     for (int j = 0; j < 40; j++) {
-                        board[j] = board[j] with { Visible = false };
+                        if (board[j] != null) board[j] = board[j] with { Visible = false };
                     }
                     for (int j = 60; j < 100; j++) {
-                        board[j] = board[j] with { Visible = true };
+                        if (board[j] != null) board[j] = board[j] with { Visible = true };
                     }
                     return Ok(new GameContext(i.ToString(), board, user.Username, Games[i].Moves!.Count, false));
                 }
@@ -179,8 +179,15 @@ namespace StrategoGameServer.Controllers
                 if (move.User == game.User_a)
                 {
                     // Reverse board for User_a
-                    game.Board[99 - move.Index_last] = game.Board[99 - move.Index];
-                    game.Board[99 - move.Index] = null!;
+                    List<Piece> reversedBoard = [.. game.Board];
+                    reversedBoard.Reverse();
+                    game.Board[move.Index_last] = reversedBoard[move.Index];
+                    reversedBoard[move.Index] = null!;
+                    reversedBoard.Reverse();
+                    for (int i = 0; i < game.Board.Length; i++)
+                    {
+                        game.Board[i] = reversedBoard[i];
+                    }
                 }
                 else
                 {
