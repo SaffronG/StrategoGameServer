@@ -159,43 +159,38 @@ namespace StrategoGameServer.Controllers
         public IActionResult PostMove([FromBody] MoveContext move)
         {
             Game? game = Games[move.LobbyId];
-            if (game.Moves is null) game = game with { Moves = [move with { Time = DateTime.Now }] };
+            if (game == null)
+            {
+                return BadRequest("Invalid Lobby ID.");
+            }
+
+            if (game.Moves is null)
+            {
+                game.Moves!.Clear();
+                game.Moves.Add(move with { Time = DateTime.Now });
+            }
             else
             {
                 if (game.Moves.Count > 0 && game.Moves.Last().User == move.User)
                 {
                     return BadRequest("It's not your turn!");
                 }
-                else if (move.User == game.User_a)
-                    {
-                        // REVERSE BOARD
-                        game.Board[99 - move.Index_last] = game.Board[99 - move.Index];
-                        game.Board[99 - move.Index_last] = null!;
-                    }
-                    else
-                    {
-                        game.Board[move.Index_last] = game.Board[move.Index];
-                        game.Board[move.Index] = null!;
-                    }
-                     if (game.Moves.Count == 0) {
 
+                if (move.User == game.User_a)
+                {
+                    // Reverse board for User_a
+                    game.Board[99 - move.Index_last] = game.Board[99 - move.Index];
+                    game.Board[99 - move.Index] = null!;
                 }
                 else
                 {
-                    if (move.User == game.User_a)
-                    {
-                        // REVERSE BOARD
-                        game.Board[99 - move.Index_last] = game.Board[99 - move.Index];
-                        game.Board[99 - move.Index_last] = null!;
-                    }
-                    else
-                    {
-                        game.Board[move.Index_last] = game.Board[move.Index];
-                        game.Board[move.Index] = null!;
-                    }
-                    game.Moves.Add(move with { Time = DateTime.Now });
+                    game.Board[move.Index_last] = game.Board[move.Index];
+                    game.Board[move.Index] = null!;
                 }
+
+                game.Moves.Add(move with { Time = DateTime.Now });
             }
+
             return Ok(game.Board);
         }
 
