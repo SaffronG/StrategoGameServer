@@ -17,4 +17,8 @@ namespace StrategoGameServer.Records
     public record GameContext(string LobbyId, Piece[] Board, string User_a, string User_b, int Turn, bool IsWin);
     public record BoardRequest(int LobbyID, string Username, int Turn);
     public record WinResponse(bool isWin, string message);
+    public record GameRequest(string Username, Piece[]? Board)
+    {
+        public GameRequest(string Username) : this(Username, null) { }
+    }
 }

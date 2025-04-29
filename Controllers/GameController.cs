@@ -84,7 +84,7 @@ namespace StrategoGameServer.Controllers
         }
 
         [HttpPost("findGame")]
-        public IActionResult FindGame([FromBody] LogoutUser user)
+        public IActionResult FindGame([FromBody] GameRequest user)
         {
             // Check if the user is already in a game
             for (int i = 0; i < Games.Count; i++)
@@ -93,7 +93,7 @@ namespace StrategoGameServer.Controllers
                 {
                     // Return the current game information
                     if (Games[i].IsWin) {
-                        if (Games[i].Moves![Games[i].Moves!.Count-1].User == user.Username) {
+                        if (Games[i].Moves![Games![i].Moves!.Count-1].User == user.Username) {
                             return Ok(new WinResponse(true, $"Congratulations, {user.Username}! You win!"));
                         }
                         else {
@@ -126,6 +126,15 @@ namespace StrategoGameServer.Controllers
                             Games[i].Board[j] = Games[i].Board[j] with { User = user.Username };
                         }
                     }
+                    if (user.Board != null) {
+                        for (int j = 0; j < 40; j++)
+                        {
+                            if (user.Board[j] != null && user.Board[j].User == "NONE")
+                            {
+                                Games[i].Board[j] = user.Board[j] with { User = user.Username, Visible = false };
+                            }
+                        }
+                    }
                     for (int j = 0; j < 100; j++) if (Games[i].Board[j] != null && Games[i].Board[j].User != user.Username) Games[i].Board[j] = Games[i].Board[j] with { Visible = false };
                     return Ok(new GameContext(i.ToString(), Games[i].Board, Games[i].User_a, user.Username, Games[i].Moves!.Count, false));
                 }
@@ -138,6 +147,15 @@ namespace StrategoGameServer.Controllers
                 newGame.Board[j] = newGame.Board[j] with { Visible = false };
             for (int j = 60; j < 100; j++)
                 newGame.Board[j] = newGame.Board[j] with { Visible = true };
+            if (user.Board != null) {
+                for (int j = 0; j < 40; j++)
+                    {
+                        if (user.Board[j] != null && user.Board[j].User == "NONE")
+                        {
+                            newGame.Board[j] = user.Board[j] with { User = user.Username, Visible = false };
+                        }
+                }
+            }
             int newLobbyID = Games.Count - 1;
             List<Piece> game = [.. Games[newLobbyID].Board];
             game.Reverse();
@@ -184,23 +202,25 @@ namespace StrategoGameServer.Controllers
             }
             else
             {
+                // ENSURE TURN ORDER
                 if (game.User_b == null)
                 {
                     return BadRequest("Waiting for opponent...");
                 }
-                if (game.Moves.Count > 0 && game.Moves.Last().User == move.User)
+                else if (game.Moves.Count > 0 && game.Moves.Last().User == move.User)
                 {
                     return BadRequest("It's not your turn!");
                 }
 
+                // STORE MOVES AS VARIABLES
                 var movingPiece = game.Board[move.Index_last];
                 var targetPiece = game.Board[move.Index];
 
+                // VALIDATE MOVE
                 if (movingPiece == null)
                 {
                     return BadRequest("No piece to move at the specified location.");
                 }
-
                 if (targetPiece != null && movingPiece.User == targetPiece.User)
                 {
                     return BadRequest("Cannot move onto a piece owned by the same player.");
@@ -221,6 +241,12 @@ namespace StrategoGameServer.Controllers
                     else if (movingPiece.Rank < targetPiece.Rank)
                     {
                         // Target piece wins
+                        game.Board[move.Index_last] = null!;
+                    }
+                    else if (((movingPiece.Rank == 1 || movingPiece.Rank == 1) && (movingPiece.Rank == 9 || targetPiece.Rank == 9)) || movingPiece.Rank == -1 || targetPiece.Rank == -1)
+                    {
+                        // Special case for Marshal vs Spy
+                        game.Board[move.Index] = null!; 
                         game.Board[move.Index_last] = null!;
                     }
                     else
