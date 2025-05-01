@@ -84,7 +84,7 @@ namespace StrategoGameServer.Controllers
         }
 
         [HttpPost("findGame")]
-        public IActionResult FindGame([FromBody] GameRequest user)
+        public IActionResult FindGame([FromBody] LogoutUser user)
         {
             // Check if the user is already in a game
             for (int i = 0; i < Games.Count; i++)
@@ -126,15 +126,6 @@ namespace StrategoGameServer.Controllers
                             Games[i].Board[j] = Games[i].Board[j] with { User = user.Username };
                         }
                     }
-                    if (user.Board != null) {
-                        for (int j = 0; j < 40; j++)
-                        {
-                            if (user.Board[j] != null && user.Board[j].User == "NONE")
-                            {
-                                Games[i].Board[j] = user.Board[j] with { User = user.Username, Visible = false };
-                            }
-                        }
-                    }
                     for (int j = 0; j < 100; j++) if (Games[i].Board[j] != null && Games[i].Board[j].User != user.Username) Games[i].Board[j] = Games[i].Board[j] with { Visible = false };
                     return Ok(new GameContext(i.ToString(), Games[i].Board, Games[i].User_a, user.Username, Games[i].Moves!.Count, false));
                 }
@@ -147,15 +138,6 @@ namespace StrategoGameServer.Controllers
                 newGame.Board[j] = newGame.Board[j] with { Visible = false };
             for (int j = 60; j < 100; j++)
                 newGame.Board[j] = newGame.Board[j] with { Visible = true };
-            if (user.Board != null) {
-                for (int j = 0; j < 40; j++)
-                    {
-                        if (user.Board[j] != null && user.Board[j].User == "NONE")
-                        {
-                            newGame.Board[j] = user.Board[j] with { User = user.Username, Visible = false };
-                        }
-                }
-            }
             int newLobbyID = Games.Count - 1;
             List<Piece> game = [.. Games[newLobbyID].Board];
             game.Reverse();
